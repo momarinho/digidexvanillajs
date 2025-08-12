@@ -1,3 +1,10 @@
+document.addEventListener('error', (e) => {
+    if (e.target.tagName === 'IMG') {
+        e.target.src = 'https://placehold.co/200x200/4a4a8a/ffffff?text=No+Image&font=vt323';
+        e.target.onerror = null;
+    }
+}, true);
+
 const state = {
     selectedDigimon: null,
     isLoading: false,
@@ -27,8 +34,8 @@ function setState(newState) {
 }
 
 // --- Camada de Serviço da API ---
-const getDigimonByName = async (name) => {
-    const response = await fetch(`https://digi-api.com/api/v1/digimon/${name.toLowerCase()}`);
+const getDigimon = async (term) => {
+    const response = await fetch(`https://digi-api.com/api/v1/digimon/${encodeURIComponent(term)}`);
     if (!response.ok) {
         throw new Error(`Digimon "${name}" not found. Please try again.`);
     }
@@ -120,7 +127,7 @@ const SearchPage = () => {
         setState({ isLoading: true, error: '' });
         
         try {
-            const digimonData = await getDigimonByName(searchTerm);
+            const digimonData = await getDigimon(searchTerm);
             setState({ selectedDigimon: digimonData });
         } catch (err) {
             setState({ error: err.message });
@@ -294,7 +301,7 @@ const DigimonDetailsPage = () => {
             setState({ isLoading: true, error: '' });
 
             try {
-                const digimonData = await getDigimonByName(digimonName);
+                const digimonData = await getDigimon(digimonName);
                 setState({ selectedDigimon: digimonData });
             } catch (err) {
                 setState({ error: err.message });

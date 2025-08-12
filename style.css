@@ -440,3 +440,15 @@ body {
     font-size: 1.1rem;
     color: var(--dw3-text-light);
 }
+
+@media (max-width: 767px) {
+    .details-page {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+    .left-panel, 
+    .right-panel {
+        max-height: 50vh;
+    }
+}
